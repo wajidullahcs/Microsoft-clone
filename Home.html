@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cursor Dots Trail</title>
+<style>
+  /* Hide default cursor */
+  body {
+    margin: 0;
+    height: 200vh; /* allow scroll */
+    background-color: #f5f5f5;
+    cursor: none;
+    font-family: Arial, sans-serif;
+  }
+
+  h1 {
+    text-align: center;
+    margin-top: 200px;
+  }
+
+  /* Cursor dots */
+  .cursor-dot {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #0067b8;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s linear;
+    opacity: 0.8;
+  }
+
+  .cursor-dot:nth-child(2) { width: 10px; height: 10px; opacity: 0.6; }
+  .cursor-dot:nth-child(3) { width: 8px; height: 8px; opacity: 0.4; }
+  .cursor-dot:nth-child(4) { width: 6px; height: 6px; opacity: 0.3; }
+  .cursor-dot:nth-child(5) { width: 4px; height: 4px; opacity: 0.2; }
+</style>
+</head>
+<body>
+
+<h1>Move Your Cursor!</h1>
+
+<script>
+  const dotsCount = 10;
+  const dots = [];
+
+  // Create dots dynamically
+  for(let i = 0; i < dotsCount; i++){
+      const dot = document.createElement('div');
+      dot.classList.add('cursor-dot');
+      document.body.appendChild(dot);
+      dots.push(dot);
+  }
+
+  let mouseX = 0, mouseY = 0;
+  const positions = dots.map(() => ({x:0, y:0}));
+
+  document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+  });
+
+  function animate() {
+      positions.forEach((pos, i) => {
+          pos.x += (mouseX - pos.x) * 0.15 * ((i+1)/dotsCount);
+          pos.y += (mouseY - pos.y) * 0.15 * ((i+1)/dotsCount);
+          dots[i].style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+      });
+      requestAnimationFrame(animate);
+  }
+
+  animate();
+</script>
+
+</body>
+</html>

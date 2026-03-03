@@ -252,7 +252,45 @@
 
 
 
+   <div id="cursor-container"></div>
 
 
+
+  <script>
+    const dotsCount = 5; // number of dots
+const dots = [];
+
+// Create dots dynamically
+for(let i = 0; i < dotsCount; i++) {
+    const dot = document.createElement('div');
+    dot.classList.add('cursor-dot');
+    document.body.appendChild(dot);
+    dots.push(dot);
+}
+
+let mouseX = 0, mouseY = 0;
+const positions = dots.map(() => ({x:0, y:0}));
+
+// Track mouse
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+// Animate dots
+function animate() {
+    positions.forEach((pos, i) => {
+        // Smooth movement for trailing effect
+        pos.x += (mouseX - pos.x) * 0.15 * ((i+1)/dotsCount);
+        pos.y += (mouseY - pos.y) * 0.15 * ((i+1)/dotsCount);
+
+        dots[i].style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+  </script>
 </body>
 </html>
